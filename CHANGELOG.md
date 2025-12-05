@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/l4rm4nd/CVE-2025-55182/compare/v1.0.3...v1.0.4) (2025-12-05)
+
+
+### Bug Fixes
+
+* simplify next config ([1622449](https://github.com/l4rm4nd/CVE-2025-55182/commit/1622449b2d7ae872537fcb355306f71387f128ac))
+
 ## [1.0.3](https://github.com/l4rm4nd/CVE-2025-55182/compare/v1.0.2...v1.0.3) (2025-12-05)
 
 

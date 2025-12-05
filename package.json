@@ -1,6 +1,6 @@
 {
   "name": "next-rsc-cve-2025-55182-vuln",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
