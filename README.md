@@ -11,12 +11,11 @@ This repository provides a minimal intentionally vulnerable environment to test 
 
 This app is a very small Next.js project that:
 
-- Uses the App Router (`app/` directory)
-- Enables React Server Components / server actions
 - Pins **vulnerable versions** of:
   - `next`: `16.0.6`
   - `react`: `19.2.0`
   - `react-dom`: `19.2.0`
+- Uses a minimal NextJS config with app router and React server actions 
 
 ## How to run
 
