@@ -1,5 +1,5 @@
 # Stage 1 - build
-FROM node:20-alpine AS build
+FROM node:20-alpine3.23 AS build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY app ./app
 RUN npm run build
 
 # Stage 2 - runtime image
-FROM node:20-alpine AS runtime
+FROM node:20-alpine3.23 AS runtime
 
 WORKDIR /app
 
