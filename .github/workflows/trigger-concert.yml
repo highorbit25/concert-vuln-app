@@ -1,0 +1,17 @@
+name: Trigger Concert Bob Remediation
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  trigger_concert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Concert workflow
+        run: |
+          curl -X 'POST' \
+            "https://concert-concert.apps.696070f8f6212675bb8fc125.ap1.techzone.ibm.com/workflows/a/bob-remediation/prod/bob-remediate?gh_issue=${{ github.event.issue.number }}&api_key=${{ secrets.CONCERT_API_KEY }}" \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d '{}'
