@@ -1,6 +1,11 @@
 # Stage 1 - build
 FROM node:20-alpine AS build
 
+# Security: Upgrade libssl3 to fix CVE-2025-15467 and related vulnerabilities
+# CVE-2025-15467 (CRITICAL): Stack buffer overflow in OpenSSL CMS implementation
+# Affects libssl3 3.5.4-r0, fixed in 3.5.5+
+RUN apk upgrade --no-cache libssl3
+
 WORKDIR /app
 
 # Install dependencies first (better caching)
@@ -16,6 +21,11 @@ RUN npm run build
 
 # Stage 2 - runtime image
 FROM node:20-alpine AS runtime
+
+# Security: Upgrade libssl3 to fix CVE-2025-15467 and related vulnerabilities
+# CVE-2025-15467 (CRITICAL): Stack buffer overflow in OpenSSL CMS implementation
+# Affects libssl3 3.5.4-r0, fixed in 3.5.5+
+RUN apk upgrade --no-cache libssl3
 
 WORKDIR /app
 
