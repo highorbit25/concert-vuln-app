@@ -8,18 +8,6 @@ jobs:
   trigger_concert:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug secret
-        run: |
-          echo "CONCERT_API_KEY length: ${#CONCERT_API_KEY}"
-          echo "First 4 chars: ${CONCERT_API_KEY:0:4}..."
-        env:
-          CONCERT_API_KEY: ${{ secrets.CONCERT_API_KEY }}
-
       - name: Trigger Concert workflow
         run: |
-          curl -X 'POST' \
-            "https://concert-concert.apps.696070f8f6212675bb8fc125.ap1.techzone.ibm.com/workflows/a/bob-remediation/prod/bob-remediate?gh_issue=${{ github.event.issue.number }}&api_key=${{ secrets.CONCERT_API_KEY }}" \
-            -H 'accept: application/json' \
-            -H 'Content-Type: application/json' \
-            -d '{}'
-
+          curl -k "https://solis-gw-workflows.apps.696070f8f6212675bb8fc125.ap1.techzone.ibm.com/workflows/a/bob-remediation/prod/bob?gh_issue=${{ github.event.issue.number }}"
