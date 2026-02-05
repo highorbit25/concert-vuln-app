@@ -1,6 +1,10 @@
 # Stage 1 - build
 FROM node:20-alpine AS build
 
+# Security: Update libcrypto3 to fix CVE-2025-69421 (NULL pointer dereference)
+# Vulnerable: libcrypto3 3.5.4-r0, Fixed: 3.5.5+
+RUN apk upgrade --no-cache libcrypto3 libssl3
+
 WORKDIR /app
 
 # Install dependencies first (better caching)
@@ -16,6 +20,10 @@ RUN npm run build
 
 # Stage 2 - runtime image
 FROM node:20-alpine AS runtime
+
+# Security: Update libcrypto3 to fix CVE-2025-69421 (NULL pointer dereference)
+# Vulnerable: libcrypto3 3.5.4-r0, Fixed: 3.5.5+
+RUN apk upgrade --no-cache libcrypto3 libssl3
 
 WORKDIR /app
 
