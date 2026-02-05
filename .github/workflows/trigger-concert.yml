@@ -10,4 +10,4 @@ jobs:
     steps:
       - name: Trigger Concert workflow
         run: |
-          curl -k "https://solis-gw-workflows.apps.696070f8f6212675bb8fc125.ap1.techzone.ibm.com/workflows/a/bob-remediation/prod/bob?gh_issue=${{ github.event.issue.number }}"
+          curl -k "https://solis-gw-workflows.apps.696070f8f6212675bb8fc125.ap1.techzone.ibm.com/workflows/a/bob-remediation/prod/bob-remediate?gh_issue=${{ github.event.issue.number }}"
