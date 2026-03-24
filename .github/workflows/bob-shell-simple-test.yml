@@ -47,7 +47,7 @@ jobs:
       
       - name: Run Bob Shell Test
         id: bob-test
-        uses: ./.github/workflows
+        uses: ./.github/actions/bob-shell
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
           bobshell_version: 'latest'

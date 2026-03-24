@@ -1,0 +1,48 @@
+name: Bob Shell CI Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Custom prompt for Bob Shell'
+        required: false
+        default: 'Analyze this repository and provide a summary of its structure and purpose.'
+
+jobs:
+  bob-shell-test:
+    runs-on: ubuntu-latest
+    name: Run Bob Shell Analysis
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Run Bob Shell
+        uses: ./.github/actions/bob-shell
+        with:
+          bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
+          bobshell_version: 'latest'
+          bobshell_debug: false
+          chat_mode: 'advanced'
+          max_coins: 3
+          prompt: ${{ github.event.inputs.prompt || 'Analyze this repository structure and list the main files and their purposes.' }}
+      
+      - name: Display Bob Shell Output
+        if: always()
+        run: |
+          echo "### Bob Shell Analysis Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See the logs above for detailed output from Bob Shell." >> $GITHUB_STEP_SUMMARY
+
+# Made with Bob
