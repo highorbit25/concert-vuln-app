@@ -151,11 +151,11 @@ runs:
         # Run Bob Shell with the provided prompt, streaming responses in debug
         if [[ "${DEBUG}" = true ]]; then
           echo "::warning::Bob Shell debug logging is enabled. This will stream responses, which could reveal sensitive information if processed with untrusted inputs."
-          if ! { bob --yolo --session-summary 'session-summary.json' --max-coins "${MAX_COINS:-3}" --chat-mode "${CHAT_MODE:-advanced}" --prompt "${PROMPT:-You are a helpful assistant.}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
+          if ! { bob --yes --session-summary 'session-summary.json' --max-coins "${MAX_COINS:-3}" --mode "${CHAT_MODE:-advanced}" "${PROMPT:-You are a helpful assistant.}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
             FAILED=true
           fi
         else
-          if ! bob --yolo --session-summary 'session-summary.json' --max-coins "${MAX_COINS:-3}" --chat-mode "${CHAT_MODE:-advanced}" --prompt "${PROMPT:-You are a helpful assistant.}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
+          if ! bob --yes --session-summary 'session-summary.json' --max-coins "${MAX_COINS:-3}" --mode "${CHAT_MODE:-advanced}" "${PROMPT:-You are a helpful assistant.}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
             FAILED=true
           fi
         fi
