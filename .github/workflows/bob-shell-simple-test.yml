@@ -1,0 +1,86 @@
+name: Bob Shell Simple Test
+
+# This is a minimal test workflow to verify Bob Shell integration
+# Run this first to ensure everything is configured correctly
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of test to run'
+        required: true
+        type: choice
+        options:
+          - 'hello-world'
+          - 'repo-analysis'
+          - 'file-listing'
+        default: 'hello-world'
+
+jobs:
+  simple-test:
+    runs-on: ubuntu-latest
+    name: Simple Bob Shell Test
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Set test prompt
+        id: set-prompt
+        run: |
+          case "${{ github.event.inputs.test_type }}" in
+            "hello-world")
+              echo "prompt=Say hello and confirm you are working correctly. Then list your available capabilities." >> $GITHUB_OUTPUT
+              ;;
+            "repo-analysis")
+              echo "prompt=Analyze this repository structure. List the main directories and describe what each one contains based on the file names." >> $GITHUB_OUTPUT
+              ;;
+            "file-listing")
+              echo "prompt=List all files in the current directory and provide a brief description of what this project appears to be." >> $GITHUB_OUTPUT
+              ;;
+          esac
+      
+      - name: Run Bob Shell Test
+        id: bob-test
+        uses: ./.github/workflows/action.yml
+        with:
+          bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
+          bobshell_version: 'latest'
+          bobshell_debug: true
+          chat_mode: 'ask'
+          max_coins: 2
+          prompt: ${{ steps.set-prompt.outputs.prompt }}
+      
+      - name: Display Test Results
+        if: always()
+        run: |
+          echo "## 🧪 Bob Shell Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Type:** ${{ github.event.inputs.test_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ **Test Passed!** Bob Shell is working correctly." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Test Failed!** Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "- Review the 'Run Bob Shell Test' step logs for detailed output" >> $GITHUB_STEP_SUMMARY
+          echo "- If successful, you can now use Bob Shell in your CI/CD pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "- See docs/GITHUB_ACTIONS_SETUP.md for more configuration options" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Verify Bob Shell Response
+        if: success()
+        run: |
+          echo "✅ Bob Shell executed successfully!"
+          echo "Check the 'Run Bob Shell Test' step above for the full response."
+
+# Made with Bob
