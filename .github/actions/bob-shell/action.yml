@@ -76,6 +76,11 @@ runs:
             echo "Configuring Bob Shell project settings."
             echo "${SETTINGS}" > ".bob/settings.json"
             cat ".bob/settings.json"
+            
+            # Also configure global settings to disable metrics
+            echo "Configuring Bob Shell global settings to disable metrics."
+            mkdir -p "${HOME}/.bob"
+            echo "${SETTINGS}" > "${HOME}/.bob/settings.json"
           fi
           if [[ "${MCP:-}" ]]; then
             echo "Configuring Bob Shell MCP settings."
@@ -127,11 +132,11 @@ runs:
         # Run Bob Shell with the provided prompt, streaming responses in debug
         if [[ "${DEBUG}" = true ]]; then
           echo "::warning::Bob Shell debug logging is enabled. This will stream responses, which could reveal sensitive information if processed with untrusted inputs."
-          if ! { bob --yolo -p "${PROMPT}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
+          if ! { bob --yolo "${PROMPT}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
             FAILED=true
           fi
         else
-          if ! bob --yolo -p "${PROMPT}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
+          if ! bob --yolo "${PROMPT}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
             FAILED=true
           fi
         fi
