@@ -35,30 +35,31 @@ jobs:
         uses: ./.github/actions/bob-shell
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
-          bobshell_debug: false
+          bobshell_debug: true
+          mcp: ${{ secrets.BOBSHELL_MCP_CONFIG }}
           prompt: ${{ github.event.inputs.prompt || 'Use GitHub MCP to access this repository and analyze its structure. List the main files and directories, and describe what this project does based on the README and code files you can access through GitHub MCP.' }}
       
-      - name: Display Bob Shell Output
-        if: always()
-        run: |
-          echo "## 🤖 Bob Shell Analysis Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+      # - name: Display Bob Shell Output
+      #   if: always()
+      #   run: |
+      #     echo "## 🤖 Bob Shell Analysis Results" >> $GITHUB_STEP_SUMMARY
+      #     echo "" >> $GITHUB_STEP_SUMMARY
+      #     echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+      #     echo "" >> $GITHUB_STEP_SUMMARY
           
-          if [ -n "${{ steps.bob-shell.outputs.summary }}" ]; then
-            echo "### 📝 Summary" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "${{ steps.bob-shell.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-          fi
+      #     if [ -n "${{ steps.bob-shell.outputs.summary }}" ]; then
+      #       echo "### 📝 Summary" >> $GITHUB_STEP_SUMMARY
+      #       echo "" >> $GITHUB_STEP_SUMMARY
+      #       echo "${{ steps.bob-shell.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+      #       echo "" >> $GITHUB_STEP_SUMMARY
+      #     fi
           
-          if [ -n "${{ steps.bob-shell.outputs.error }}" ]; then
-            echo "### ⚠️ Errors" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "${{ steps.bob-shell.outputs.error }}" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
+      #     if [ -n "${{ steps.bob-shell.outputs.error }}" ]; then
+      #       echo "### ⚠️ Errors" >> $GITHUB_STEP_SUMMARY
+      #       echo "" >> $GITHUB_STEP_SUMMARY
+      #       echo '```' >> $GITHUB_STEP_SUMMARY
+      #       echo "${{ steps.bob-shell.outputs.error }}" >> $GITHUB_STEP_SUMMARY
+      #       echo '```' >> $GITHUB_STEP_SUMMARY
+      #     fi
 
 # Made with Bob

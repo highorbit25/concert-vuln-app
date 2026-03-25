@@ -52,6 +52,7 @@ jobs:
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
           bobshell_debug: true
+          mcp: ${{ secrets.BOBSHELL_MCP_CONFIG }}
           prompt: ${{ steps.set-prompt.outputs.prompt }}
       
       - name: Display Test Results
