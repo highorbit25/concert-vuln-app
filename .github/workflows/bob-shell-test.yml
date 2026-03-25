@@ -31,6 +31,7 @@ jobs:
           node-version: '22'
       
       - name: Run Bob Shell with GitHub MCP
+        id: bob-shell
         uses: ./.github/actions/bob-shell
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
@@ -40,10 +41,24 @@ jobs:
       - name: Display Bob Shell Output
         if: always()
         run: |
-          echo "### Bob Shell Analysis Results" >> $GITHUB_STEP_SUMMARY
+          echo "## 🤖 Bob Shell Analysis Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "See the logs above for detailed output from Bob Shell." >> $GITHUB_STEP_SUMMARY
+          
+          if [ -n "${{ steps.bob-shell.outputs.summary }}" ]; then
+            echo "### 📝 Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.bob-shell.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -n "${{ steps.bob-shell.outputs.error }}" ]; then
+            echo "### ⚠️ Errors" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.bob-shell.outputs.error }}" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
 
 # Made with Bob
