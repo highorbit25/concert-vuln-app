@@ -30,10 +30,7 @@ jobs:
         uses: ./.github/actions/bob-shell
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
-          bobshell_version: 'latest'
           bobshell_debug: false
-          chat_mode: 'advanced'
-          max_coins: 3
           prompt: ${{ github.event.inputs.prompt || 'Analyze this repository structure and list the main files and their purposes.' }}
       
       - name: Display Bob Shell Output

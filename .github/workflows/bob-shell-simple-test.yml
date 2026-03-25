@@ -50,10 +50,7 @@ jobs:
         uses: ./.github/actions/bob-shell
         with:
           bobshell_api_key: ${{ secrets.BOBSHELL_API_KEY }}
-          bobshell_version: 'latest'
           bobshell_debug: true
-          chat_mode: 'ask'
-          max_coins: 2
           prompt: ${{ steps.set-prompt.outputs.prompt }}
       
       - name: Display Test Results
