@@ -67,12 +67,7 @@ jobs:
           else
             echo "❌ **Test Failed!** Check the logs above for details." >> $GITHUB_STEP_SUMMARY
           fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "- Review the 'Run Bob Shell Test' step logs for detailed output" >> $GITHUB_STEP_SUMMARY
-          echo "- If successful, you can now use Bob Shell in your CI/CD pipeline" >> $GITHUB_STEP_SUMMARY
-          echo "- See docs/GITHUB_ACTIONS_SETUP.md for more configuration options" >> $GITHUB_STEP_SUMMARY
+        
       
       - name: Verify Bob Shell Response
         if: success()
