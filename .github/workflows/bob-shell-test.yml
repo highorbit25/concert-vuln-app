@@ -6,11 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       prompt:
-        description: 'Custom prompt for Bob Shell'
+        description: 'Custom prompt for Bob Shell (leave empty to use default behavior)'
         required: false
-        default: 'Analyze this repository and provide a summary of its structure and purpose.'
       issue_number:
-        description: 'Issue number to fix (optional)'
+        description: 'Issue number to fix (leave empty for default behavior)'
         required: false
 
 jobs:
