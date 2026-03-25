@@ -21,10 +21,6 @@ inputs:
   bobshell_api_key:
     description: 'The API key used for authenticating with Bob Shell.'
     required: true
-  bobshell_version:
-    description: 'The version of Bob Shell to install. Can be "latest" or a specific version number. Do not use a version older than `0.0.27`.'
-    required: false
-    default: 'latest'
   bobshell_debug:
     description: 'Enable debug logging and output streaming.'
     required: false
@@ -39,15 +35,6 @@ inputs:
   mcp:
     description: 'A JSON string written to `.bob/mcp.json` to configure Bob Shell MCP settings.'
     required: false
-  chat_mode:
-    description: 'The chat mode to run Bob Shell in.'
-    required: false
-    default: 'advanced'
-  max_coins:
-    description: 'When task costs exceed this value, Bob Shell will not continue.'
-    required: false
-    default: 3
-
 outputs:
   summary:
     description: 'The summarized output from the Bob Shell execution.'
@@ -103,24 +90,12 @@ runs:
 
     - name: 'Install Bob Shell'
       id: 'install'
-      env:
-        BOBSHELL_VERSION: '${{ inputs.bobshell_version }}'
       shell: 'bash'
       run: |-
         set -euo pipefail
 
-        VERSION_INPUT="${BOBSHELL_VERSION:-latest}"
-
-        if [[ "${VERSION_INPUT}" == "latest" ]]; then
-          echo "Installing the latest version of Bob Shell."
-          # version="$(curl https://s3.us-south.cloud-object-storage.appdomain.cloud/bobshell/bobshell-version.txt)"
-          # dl_url="http://bob-bot1.fyre.ibm.com:3000/cos-assets/bobshell/bobshell-${version}.tgz"
-          # npm install --silent --no-audit --prefer-offline --global "${dl_url}"
-          curl -s https://s3.us-south.cloud-object-storage.appdomain.cloud/bobshell/install-bobshell.sh | bash -s -- --pm npm
-        elif [[ "${VERSION_INPUT}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9\.-]+)?(\+[a-zA-Z0-9\.-]+)?$ ]]; then
-          dl_url="http://bob-bot1.fyre.ibm.com:3000/cos-assets/bobshell/bobshell-${VERSION_INPUT}.tgz"
-          npm install --silent --no-audit --prefer-offline --global "${dl_url}"
-        fi
+        echo "Installing the latest version of Bob Shell."
+        curl -s https://s3.us-south.cloud-object-storage.appdomain.cloud/bobshell/install-bobshell.sh | bash -s -- --pm npm
 
         echo "Verifying installation:"
         if command -v bob >/dev/null 2>&1; then
@@ -151,11 +126,11 @@ runs:
         # Run Bob Shell with the provided prompt, streaming responses in debug
         if [[ "${DEBUG}" = true ]]; then
           echo "::warning::Bob Shell debug logging is enabled. This will stream responses, which could reveal sensitive information if processed with untrusted inputs."
-          if ! { bob --yolo --max-coins "${MAX_COINS:-3}" -p "${PROMPT:-You are a helpful assistant.}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
+          if ! { bob --yolo -p "${PROMPT}" 2> >(tee "${TEMP_STDERR}" >&2) | tee "${TEMP_STDOUT}"; }; then
             FAILED=true
           fi
         else
-          if ! bob --yolo --max-coins "${MAX_COINS:-3}" -p "${PROMPT:-You are a helpful assistant.}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
+          if ! bob --yolo -p "${PROMPT}" 2> "${TEMP_STDERR}" 1> "${TEMP_STDOUT}"; then
             FAILED=true
           fi
         fi
@@ -184,8 +159,6 @@ runs:
         DEBUG: '${{ fromJSON(inputs.bobshell_debug || false) }}'
         BOBSHELL_API_KEY: '${{ inputs.bobshell_api_key }}'
         PROMPT: '${{ inputs.prompt }}'
-        CHAT_MODE: '${{ inputs.chat_mode }}'
-        MAX_COINS: '${{ inputs.max_coins }}'
 
 branding:
   icon: 'terminal'
