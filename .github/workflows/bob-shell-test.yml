@@ -18,6 +18,13 @@ jobs:
     name: Run Bob Shell Analysis with GitHub MCP
     
     steps:
+      - name: Checkout repository (for action definition only)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/actions/bob-shell
+          sparse-checkout-cone-mode: false
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
