@@ -159,6 +159,7 @@ runs:
         DEBUG: '${{ fromJSON(inputs.bobshell_debug || false) }}'
         BOBSHELL_API_KEY: '${{ inputs.bobshell_api_key }}'
         PROMPT: '${{ inputs.prompt }}'
+        SETTINGS: '${{ inputs.settings }}'
 
 branding:
   icon: 'terminal'
