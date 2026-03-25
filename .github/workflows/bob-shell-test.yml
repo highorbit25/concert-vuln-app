@@ -59,7 +59,8 @@ jobs:
           bobshell_debug: true
           mcp: ${{ secrets.BOBSHELL_MCP_CONFIG }}
           prompt: ${{ steps.set-prompt.outputs.prompt }}
-          settings: '{"privacy":{"usageStatisticsEnabled":false}}'
+          # settings: '{"privacy":{"usageStatisticsEnabled":false}}'
+          settings: ${{ vars.BOBSHELL_SETTINGS }}
       
       # - name: Display Bob Shell Output
       #   if: always()

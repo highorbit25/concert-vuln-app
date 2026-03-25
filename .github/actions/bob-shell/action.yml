@@ -77,10 +77,10 @@ runs:
             echo "${SETTINGS}" > ".bob/settings.json"
             cat ".bob/settings.json"
             
-            # Also configure global settings to disable metrics
-            echo "Configuring Bob Shell global settings to disable metrics."
-            mkdir -p "${HOME}/.bob"
-            echo "${SETTINGS}" > "${HOME}/.bob/settings.json"
+            # # Also configure global settings to disable metrics
+            # echo "Configuring Bob Shell global settings to disable metrics."
+            # mkdir -p "${HOME}/.bob"
+            # echo "${SETTINGS}" > "${HOME}/.bob/settings.json"
           fi
           if [[ "${MCP:-}" ]]; then
             echo "Configuring Bob Shell MCP settings."
