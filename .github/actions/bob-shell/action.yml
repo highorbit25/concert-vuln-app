@@ -75,6 +75,7 @@ runs:
           if [[ "${SETTINGS:-}" ]]; then
             echo "Configuring Bob Shell project settings."
             echo "${SETTINGS}" > ".bob/settings.json"
+            cat ".bob/settings.json"
           fi
           if [[ "${MCP:-}" ]]; then
             echo "Configuring Bob Shell MCP settings."

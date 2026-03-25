@@ -44,7 +44,7 @@ jobs:
             # Manual workflow dispatch with custom prompt
             PROMPT="${{ github.event.inputs.prompt }}"
           else
-            # Default prompt for push/PR events
+            # Default prompt
             PROMPT="Analyze this repository structure. The repository is checked out locally at the current working directory. List the main files and directories, and describe what this project does based on the README and code files."
           fi
           echo "prompt<<EOF" >> $GITHUB_OUTPUT
