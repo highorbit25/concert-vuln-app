@@ -1,5 +1,10 @@
 # Stage 1 - build
-FROM node:20-alpine AS build
+FROM node:20-alpine3.21 AS build
+
+# Security: Update packages to patch CVE-2025-69421 (libssl3 vulnerability)
+RUN apk update && \
+    apk upgrade --no-cache && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
@@ -15,7 +20,12 @@ COPY app ./app
 RUN npm run build
 
 # Stage 2 - runtime image
-FROM node:20-alpine AS runtime
+FROM node:20-alpine3.21 AS runtime
+
+# Security: Update packages to patch CVE-2025-69421 (libssl3 vulnerability)
+RUN apk update && \
+    apk upgrade --no-cache && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
